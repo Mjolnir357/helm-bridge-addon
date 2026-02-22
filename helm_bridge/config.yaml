@@ -1,8 +1,8 @@
 name: Helm Bridge
-version: "1.3.0"
+version: "1.3.1"
 slug: helm-bridge
 description: Connect your Home Assistant to Helm Smart Home Dashboard with local device management
-url: "https://github.com/Mjolnir357/Helm-by-nautilink.replit.app"
+url: "https://github.com/Mjolnir357/helm-bridge-addon"
 arch:
   - aarch64
   - amd64
@@ -11,7 +11,7 @@ arch:
   - i386
 startup: application
 boot: auto
-init: true
+init: false
 homeassistant_api: true
 host_network: false
 hassio_api: true
