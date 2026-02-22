@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3] - 2026-02-22
+
+### Fixed
+- Added icon.png and logo.png to bridge addon
+- Cleaned up duplicate addon directories from repo
+- Home Assistant now correctly discovers helm-bridge and helm-supervisor
+
 ## [1.0.2] - 2026-02-22
 
 ### Fixed

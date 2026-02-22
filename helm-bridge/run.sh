@@ -17,7 +17,7 @@ export CREDENTIAL_PATH="/data/credentials.json"
 export BRIDGE_ID=$(bashio::addon.hostname)
 export LOG_LEVEL="${LOG_LEVEL}"
 
-bashio::log.info "Helm Bridge v1.3.2..."
+bashio::log.info "Helm Bridge v1.3.3..."
 bashio::log.info "  Cloud URL: ${CLOUD_URL}"
 bashio::log.info "  Bridge ID: ${BRIDGE_ID}"
 bashio::log.info "  Log Level: ${LOG_LEVEL}"

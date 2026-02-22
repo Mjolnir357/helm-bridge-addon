@@ -169,7 +169,6 @@ function collectAllFiles(): FileToUpload[] {
   const dirs = [
     { localDir: 'helm-bridge-addon/helm-bridge', repoDir: 'helm-bridge' },
     { localDir: 'helm-supervisor', repoDir: 'helm-supervisor' },
-    { localDir: 'helm-supervisor-addon/helm_supervisor', repoDir: 'helm-supervisor-addon/helm_supervisor' },
     { localDir: 'bridge/src', repoDir: 'bridge/src' },
     { localDir: 'bridge/public', repoDir: 'bridge/public' },
   ];
@@ -188,11 +187,6 @@ function collectAllFiles(): FileToUpload[] {
 
   const rootFiles = [
     { local: 'helm-bridge-addon/repository.yaml', repo: 'repository.yaml' },
-    { local: 'helm-supervisor/repository.yaml', repo: 'helm-supervisor/repository.yaml' },
-    { local: 'helm-supervisor-addon/repository.yaml', repo: 'helm-supervisor-addon/repository.yaml' },
-    { local: 'helm-supervisor-addon/README.md', repo: 'helm-supervisor-addon/README.md' },
-    { local: 'helm-bridge-addon/packages/helm-bridge-addon/config.yaml', repo: 'helm-bridge-addon/packages/helm-bridge-addon/config.yaml' },
-    { local: 'helm-bridge-addon/packages/helm-bridge-addon/repository.yaml', repo: 'helm-bridge-addon/packages/helm-bridge-addon/repository.yaml' },
     { local: 'scripts/push-to-github.ts', repo: 'scripts/push-to-github.ts' },
   ];
 

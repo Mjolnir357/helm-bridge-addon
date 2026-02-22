@@ -2,6 +2,13 @@
 
 All notable changes to the Helm Bridge add-on will be documented in this file.
 
+## [1.3.3] - 2026-02-22
+
+### Fixed
+- Added icon.png and logo.png to bridge addon
+- Cleaned up duplicate addon directories from repo
+- Home Assistant now correctly discovers helm-bridge and helm-supervisor
+
 ## [1.3.2] - 2026-02-22
 
 ### Fixed

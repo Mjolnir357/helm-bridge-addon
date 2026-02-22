@@ -1,5 +1,5 @@
 name: Helm Bridge
-version: "1.3.2"
+version: "1.3.3"
 slug: helm-bridge
 description: Connect your Home Assistant to Helm Smart Home Dashboard with local device management
 url: "https://github.com/Mjolnir357/helm-bridge-addon"
