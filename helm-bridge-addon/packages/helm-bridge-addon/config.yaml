@@ -1,5 +1,5 @@
 name: Helm Bridge
-version: "1.3.1"
+version: "1.3.2"
 slug: helm-bridge
 description: >-
   DEPRECATED: This directory is a legacy copy. The canonical add-on source is at /helm-bridge/ in the repo root.

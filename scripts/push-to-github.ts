@@ -73,22 +73,21 @@ function updateVersionInFile(filePath: string, newVersion: string): void {
     /version:\s*"?[0-9]+\.[0-9]+\.[0-9]+"?/,
     `version: "${newVersion}"`
   );
-  const versionLogPattern = /Starting Helm (Bridge|Supervisor) v[0-9]+\.[0-9]+\.[0-9]+/;
-  if (versionLogPattern.test(content)) {
-    content = content.replace(
-      versionLogPattern,
-      (match) => {
-        const name = match.match(/Helm (Bridge|Supervisor)/)?.[0] || 'Helm Bridge';
-        return `${name} v${newVersion}`;
-      }
-    );
-  }
+  const versionLogPattern = /Helm (Bridge|Supervisor) v[0-9]+\.[0-9]+\.[0-9]+/g;
+  content = content.replace(
+    versionLogPattern,
+    (match) => {
+      const name = match.match(/Helm (Bridge|Supervisor)/)?.[0] || 'Helm Bridge';
+      return `${name} v${newVersion}`;
+    }
+  );
   fs.writeFileSync(filePath, content, 'utf-8');
 }
 
 function generateChangelogEntry(version: string, changes: string): string {
   const date = new Date().toISOString().split('T')[0];
-  return `\n## [${version}] - ${date}\n\n${changes}\n`;
+  const parsedChanges = changes.replace(/\\n/g, '\n');
+  return `\n## [${version}] - ${date}\n\n${parsedChanges}\n`;
 }
 
 function prependChangelog(changelogPath: string, entry: string): void {
@@ -208,7 +207,7 @@ function collectAllFiles(): FileToUpload[] {
 }
 
 function walkDir(dir: string, callback: (filePath: string) => void) {
-  const skipDirs = ['node_modules', '.git', 'dist', '.cache'];
+  const skipDirs = ['node_modules', '.git', '.cache'];
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);

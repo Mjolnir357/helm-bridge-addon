@@ -1,8 +1,20 @@
 # Changelog
 
+## [1.0.2] - 2026-02-22
+
+### Fixed
+- Fixed changelog formatting (literal \
+ replaced with actual newlines)
+- Fixed version pattern matching in run.sh files
+- Fixed file sync to include rootfs build artifacts
+
 ## [1.0.1] - 2026-02-22
 
-### Changed\n- Unified all GitHub repo URLs to Mjolnir357/helm-bridge-addon\n- Updated supervisor config and repository URLs\n- Cleaned up legacy directory references\n- Added automated sync script with version bumping and changelog
+### Changed
+- Unified all GitHub repo URLs to Mjolnir357/helm-bridge-addon
+- Updated supervisor config and repository URLs
+- Cleaned up legacy directory references
+- Added automated sync script with version bumping and changelog
 
 ## 1.0.0
 - Initial release
