@@ -1,0 +1,30 @@
+name: "Helm Supervisor"
+description: "Monitoring, logging, and diagnostics collector for Helm Smart Home Dashboard"
+version: "1.0.1"
+slug: "helm_supervisor"
+url: "https://github.com/Mjolnir357/helm-bridge-addon"
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+startup: application
+boot: auto
+init: false
+options:
+  helm_url: ""
+  api_key: ""
+  sync_interval: 60
+  collect_device_states: true
+  collect_performance_metrics: true
+  collect_addon_status: true
+  log_level: "info"
+schema:
+  helm_url: str
+  api_key: str
+  sync_interval: "int(10,600)"
+  collect_device_states: bool
+  collect_performance_metrics: bool
+  collect_addon_status: bool
+  log_level: "list(debug|info|warn|error)"

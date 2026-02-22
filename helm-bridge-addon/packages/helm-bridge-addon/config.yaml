@@ -1,0 +1,32 @@
+name: Helm Bridge
+version: "1.3.1"
+slug: helm-bridge
+description: >-
+  DEPRECATED: This directory is a legacy copy. The canonical add-on source is at /helm-bridge/ in the repo root.
+  Connect your Home Assistant to Helm Smart Home Dashboard with local device management
+url: "https://github.com/Mjolnir357/helm-bridge-addon"
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+startup: application
+boot: auto
+init: true
+homeassistant_api: true
+host_network: false
+hassio_api: true
+ingress: true
+ingress_port: 8098
+panel_icon: mdi:link-variant
+panel_title: Device Manager
+options:
+  cloud_url: "https://helm-by-nautilink.replit.app"
+  log_level: info
+schema:
+  cloud_url: url
+  log_level: list(debug|info|warn|error)
+map:
+  - addon_config:rw
+  - share:ro
