@@ -204,6 +204,7 @@
       selectedMerges: {},
       pairing: null,
       bridgeStatus: null,
+      mainTab: 'bridge',
     };
 
     let pairingPollTimer = null;
@@ -489,6 +490,27 @@
       return html;
     }
 
+    function renderSupervisorSetup() {
+      const helmUrl = 'https://helm-by-nautilink.replit.app';
+      const supervisorUrl = helmUrl + '/supervisor';
+      return '<div class="pairing-card" style="border-color:rgba(79,209,199,0.4);">' +
+        '<h2>Helm Supervisor Setup</h2>' +
+        '<p style="color:var(--text-secondary);font-size:0.875rem;margin-bottom:6px;">The Supervisor collects HA logs, metrics, and device states.</p>' +
+        '<p style="color:var(--primary);font-size:0.875rem;font-weight:600;margin-bottom:20px;">Supervisor works independently — you do not need Bridge paired first.</p>' +
+        '<a href="' + supervisorUrl + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-bottom:24px;text-decoration:none;display:inline-flex;">Open Helm Supervisor Dashboard &#8599;</a>' +
+        '<div class="instructions" style="text-align:left;max-width:480px;margin:0 auto;">' +
+          '<p style="font-weight:600;color:var(--text-primary);margin-bottom:12px;">To connect Helm Supervisor:</p>' +
+          '<ol>' +
+            '<li>Click the button above &rarr; log in &rarr; click <strong>Register Instance</strong> &rarr; click the eye icon to reveal your API key &rarr; copy it</li>' +
+            '<li>In HA: open <strong>Helm Supervisor</strong> add-on &rarr; <strong>Configuration</strong> tab</li>' +
+            '<li>Set <code style="background:rgba(79,209,199,0.1);padding:1px 6px;border-radius:4px;">helm_url</code> to <code style="background:rgba(79,209,199,0.1);padding:1px 6px;border-radius:4px;">' + helmUrl + '</code></li>' +
+            '<li>Paste your API key into <code style="background:rgba(79,209,199,0.1);padding:1px 6px;border-radius:4px;">api_key</code> &rarr; click <strong>Save</strong> &rarr; click <strong>Start</strong></li>' +
+          '</ol>' +
+        '</div>' +
+        '<p style="color:var(--text-secondary);font-size:0.75rem;margin-top:20px;background:rgba(79,209,199,0.05);border:1px solid rgba(79,209,199,0.15);border-radius:8px;padding:10px 14px;">After about 60 seconds, HA logs and device states will appear on the Supervisor dashboard.</p>' +
+      '</div>';
+    }
+
     function render() {
       const app = document.getElementById('app');
       
@@ -502,40 +524,49 @@
         '<button class="btn btn-secondary" onclick="handleRefresh()">↻ Refresh</button>' +
       '</header>';
 
-      html += renderPairingSection();
+      html += '<div class="tabs">' +
+        '<div class="tab' + (state.mainTab !== 'supervisor' ? ' active' : '') + '" onclick="setMainTab(\'bridge\')">&#9875; Bridge</div>' +
+        '<div class="tab' + (state.mainTab === 'supervisor' ? ' active' : '') + '" onclick="setMainTab(\'supervisor\')">&#128202; Supervisor Setup</div>' +
+      '</div>';
 
-      const isPaired = state.pairing && state.pairing.status === 'paired';
-      const haConnected = state.bridgeStatus && state.bridgeStatus.haConnected;
+      if (state.mainTab === 'supervisor') {
+        html += renderSupervisorSetup();
+      } else {
+        html += renderPairingSection();
 
-      if (isPaired && haConnected) {
-        html += '<div class="tabs">' +
-          '<div class="tab' + (state.activeTab === 'suggestions' ? ' active' : '') + '" onclick="setTab(\'suggestions\')">Duplicates (' + state.suggestions.length + ')</div>' +
-          '<div class="tab' + (state.activeTab === 'groups' ? ' active' : '') + '" onclick="setTab(\'groups\')">Merged (' + state.groups.length + ')</div>' +
-          '<div class="tab' + (state.activeTab === 'devices' ? ' active' : '') + '" onclick="setTab(\'devices\')">All Devices (' + state.entities.filter(e => e.domain === 'light' || e.domain === 'switch').length + ')</div>' +
-        '</div>';
+        const isPaired = state.pairing && state.pairing.status === 'paired';
+        const haConnected = state.bridgeStatus && state.bridgeStatus.haConnected;
 
-        if (state.activeTab === 'suggestions') {
-          if (state.suggestions.length === 0) {
-            html += '<div class="card empty-state"><h3>No Duplicates Found</h3><p>All your devices look unique, or they may already be merged.</p></div>';
-          } else {
-            state.suggestions.forEach((s, i) => { html += renderSuggestion(s, i); });
+        if (isPaired && haConnected) {
+          html += '<div class="tabs">' +
+            '<div class="tab' + (state.activeTab === 'suggestions' ? ' active' : '') + '" onclick="setTab(\'suggestions\')">Duplicates (' + state.suggestions.length + ')</div>' +
+            '<div class="tab' + (state.activeTab === 'groups' ? ' active' : '') + '" onclick="setTab(\'groups\')">Merged (' + state.groups.length + ')</div>' +
+            '<div class="tab' + (state.activeTab === 'devices' ? ' active' : '') + '" onclick="setTab(\'devices\')">All Devices (' + state.entities.filter(e => e.domain === 'light' || e.domain === 'switch').length + ')</div>' +
+          '</div>';
+
+          if (state.activeTab === 'suggestions') {
+            if (state.suggestions.length === 0) {
+              html += '<div class="card empty-state"><h3>No Duplicates Found</h3><p>All your devices look unique, or they may already be merged.</p></div>';
+            } else {
+              state.suggestions.forEach((s, i) => { html += renderSuggestion(s, i); });
+            }
+          } else if (state.activeTab === 'groups') {
+            if (state.groups.length === 0) {
+              html += '<div class="card empty-state"><h3>No Merged Groups</h3><p>Check the Duplicates tab to merge devices.</p></div>';
+            } else {
+              state.groups.forEach(g => { html += renderGroup(g); });
+            }
+          } else if (state.activeTab === 'devices') {
+            state.entities.filter(e => e.domain === 'light' || e.domain === 'switch').forEach(e => {
+              html += renderEntityCard(e);
+            });
           }
-        } else if (state.activeTab === 'groups') {
-          if (state.groups.length === 0) {
-            html += '<div class="card empty-state"><h3>No Merged Groups</h3><p>Check the Duplicates tab to merge devices.</p></div>';
-          } else {
-            state.groups.forEach(g => { html += renderGroup(g); });
-          }
-        } else if (state.activeTab === 'devices') {
-          state.entities.filter(e => e.domain === 'light' || e.domain === 'switch').forEach(e => {
-            html += renderEntityCard(e);
-          });
+        } else if (isPaired && !haConnected) {
+          html += '<div class="status-banner status-disconnected">' +
+            '<div class="status-dot yellow"></div>' +
+            '<span>Waiting for Home Assistant connection... Device management will be available once connected.</span>' +
+          '</div>';
         }
-      } else if (isPaired && !haConnected) {
-        html += '<div class="status-banner status-disconnected">' +
-          '<div class="status-dot yellow"></div>' +
-          '<span>Waiting for Home Assistant connection... Device management will be available once connected.</span>' +
-        '</div>';
       }
 
       if (state.toast) {
@@ -551,10 +582,16 @@
       render();
     }
 
+    function setMainTab(tab) {
+      state.mainTab = tab;
+      render();
+    }
+
     window.handleDeleteGroup = handleDeleteGroup;
     window.handleControlGroup = handleControlGroup;
     window.handleRefresh = handleRefresh;
     window.setTab = setTab;
+    window.setMainTab = setMainTab;
 
     loadData();
   </script>

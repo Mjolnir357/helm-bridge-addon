@@ -60,7 +60,7 @@ npx esbuild "$BRIDGE_SRC/index.ts" \
   --outfile="$OUTPUT_DIR/dist/index.js" \
   --external:better-sqlite3 \
   --external:express \
-  --banner:js="import { createRequire } from 'module'; const require = createRequire(import.meta.url);"
+  --banner:js="import { createRequire } from 'module'; const require = createRequire(import.meta.url); import { fileURLToPath as _fileURLToPath } from 'url'; import { dirname as _pathDirname } from 'path'; const __filename = _fileURLToPath(import.meta.url); const __dirname = _pathDirname(__filename);"
 
 # Verify bundle was created
 if [ ! -f "$OUTPUT_DIR/dist/index.js" ]; then

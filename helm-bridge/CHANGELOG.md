@@ -2,6 +2,13 @@
 
 All notable changes to the Helm Bridge add-on will be documented in this file.
 
+## [1.4.0] - 2026-06-07
+
+### Fixed
+- ESM __dirname polyfill to prevent startup crash on Node/s6-overlay
+- Rebuilt bundle to restore /api/pairing and /api/bridge-status endpoints (were missing from previous build, caused status page to hang)
+- Added Supervisor Setup tab to Bridge ingress UI
+
 ## [1.3.3] - 2026-02-22
 
 ### Fixed
